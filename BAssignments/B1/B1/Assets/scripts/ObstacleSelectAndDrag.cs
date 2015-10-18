@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ObstacleSelectAndDrag : MonoBehaviour {
 
-	//NEED INFO ABOUT IF OBJECTS ARE CURRENTLY SELECTED FOR AGENTS SO WE CAN INTERCHANGE SELECT/DESELECT
 	public float speed = 1.0f;
 
 	private Transform objSelected;

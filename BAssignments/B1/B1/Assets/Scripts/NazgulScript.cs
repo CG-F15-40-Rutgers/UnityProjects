@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class AgentScript : MonoBehaviour
+public class NazgulScript : MonoBehaviour
 {
 	private NavMeshAgent agent;
 	private Material mat;
@@ -11,9 +11,9 @@ public class AgentScript : MonoBehaviour
 	{
 		agent = GetComponent<NavMeshAgent>();
 		mat = GetComponent<Renderer>().material;
-		mat.SetColor("_Color", Color.blue);
+		mat.SetColor("_Color", Color.magenta);
 		
-		//agent.SetDestination(new Vector3(20, 1, 20));
+		agent.SetDestination(new Vector3(20, 1, 20));
 	}
 	
 	// Update is called once per frame
@@ -44,11 +44,11 @@ public class AgentScript : MonoBehaviour
 	{
 		if (on)
 		{
-			mat.SetColor("_Color", Color.green);
+			mat.SetColor("_Color", Color.black);
 		}
 		else
 		{
-			mat.SetColor("_Color", Color.blue);
+			mat.SetColor("_Color", Color.magenta);
 		}
 		
 	}

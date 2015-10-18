@@ -23,7 +23,7 @@ public class SelectorScript : MonoBehaviour {
         if (Physics.Raycast(ray, out hit))
         {
 			System.Console.WriteLine("Hit of type:" + hit.transform.tag.ToString());
-            if (hit.transform.tag == "Agents" && Input.GetMouseButtonDown(0))
+            if ((hit.transform.tag == "Agents" || hit.transform.tag == "Nazgul") && Input.GetMouseButtonDown(0))
             {
 				if(obstacleSelector.isSelected())
 					obstacleSelector.Deselect();
