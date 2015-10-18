@@ -9,10 +9,13 @@ public class ObstacleSelectAndDrag : MonoBehaviour {
 	private Transform objSelected;
 	private bool selected;
 	private Color startcolor;
+	private SelectorScript agentSelector;
 
 	void Start(){
 		objSelected = null;
 		selected = false;
+		agentSelector = GetComponent<SelectorScript> ();
+
 	}
 
 	void FixedUpdate () {
@@ -20,11 +23,18 @@ public class ObstacleSelectAndDrag : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);     
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit, 200) && (hit.collider.tag == "obstacle")) {
-				if(objSelected!=null&&hit.transform!=objSelected)
+				if(objSelected==null){
+					agentSelector.MassRemove();
+					Select(hit.transform);
+				}else if(hit.transform!=objSelected){
 					Deselect ();
-				Select(hit.transform);
+					agentSelector.MassRemove();
+					Select(hit.transform);
+				}else{
+					Deselect();
+				}
 			}else{
-				Debug.Log(objSelected);
+				//Debug.Log(objSelected);
 				if(objSelected!=null)
 					Deselect ();
 			}
@@ -36,20 +46,24 @@ public class ObstacleSelectAndDrag : MonoBehaviour {
 
 	}
 
-	void Select(Transform obj){
-		Debug.Log ("boop");
+	public void Select(Transform obj){
+		//Debug.Log ("boop");
 		selected = true;
 		objSelected = obj;
 		startcolor = obj.gameObject.GetComponent<Renderer>().material.color;
 		obj.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
 	}
 
-	void Deselect(){
-		Debug.Log (startcolor);
+	public void Deselect(){
+		//Debug.Log (startcolor);
 		objSelected.gameObject.GetComponent<Renderer>().material.color = startcolor;
 		selected = false;
 		objSelected = null;
 
+	}
+
+	public bool isSelected(){
+		return selected;
 	}
 
 	void Navigate(){

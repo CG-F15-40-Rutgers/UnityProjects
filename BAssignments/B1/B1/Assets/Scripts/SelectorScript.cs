@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 public class SelectorScript : MonoBehaviour {
 
+
     private List<GameObject> selectedAgents;
     private GameObject selected;
-
+	private ObstacleSelectAndDrag obstacleSelector;
 	// Use this for initialization
 	void Start ()
     {
         selectedAgents = new List<GameObject>();
         System.Console.WriteLine("Starting");
+		obstacleSelector = GetComponent<ObstacleSelectAndDrag> ();
     }
 
     // Update is called once per frame
@@ -20,9 +22,11 @@ public class SelectorScript : MonoBehaviour {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
-            System.Console.WriteLine("Hit of type:" + hit.transform.tag.ToString());
+			System.Console.WriteLine("Hit of type:" + hit.transform.tag.ToString());
             if (hit.transform.tag == "Agents" && Input.GetMouseButtonDown(0))
             {
+				if(obstacleSelector.isSelected())
+					obstacleSelector.Deselect();
                 selected = hit.transform.gameObject;
                 if (selectedAgents.Contains(selected))
                 {
@@ -57,4 +61,12 @@ public class SelectorScript : MonoBehaviour {
             }
         }
     }
+
+	public void MassRemove(){
+		while (selectedAgents.Count>0) {
+			GameObject temp=selectedAgents[0];
+			temp.SendMessage("Selected", false);
+			selectedAgents.Remove(temp);
+		}
+	}
 }
