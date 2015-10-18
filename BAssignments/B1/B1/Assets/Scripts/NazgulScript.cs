@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class NazgulScript : MonoBehaviour
 {
-	private NavMeshAgent agent;
+	private NavMeshAgent agent; 
 	private NavMeshObstacle obstacle;
 	private Material mat;
 	
