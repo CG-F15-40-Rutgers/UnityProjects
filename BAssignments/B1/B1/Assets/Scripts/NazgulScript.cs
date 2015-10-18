@@ -4,16 +4,21 @@ using System.Collections.Generic;
 public class NazgulScript : MonoBehaviour
 {
 	private NavMeshAgent agent;
+	private NavMeshObstacle obstacle;
 	private Material mat;
 	
 	// Use this for initialization
 	void Start()
 	{
-		agent = GetComponent<NavMeshAgent>();
+		agent = GetComponent<NavMeshAgent> ();
+		obstacle = GetComponent<NavMeshObstacle> ();
+
+		AgentToObstacle ();
+
 		mat = GetComponent<Renderer>().material;
 		mat.SetColor("_Color", Color.magenta);
 		
-		agent.SetDestination(new Vector3(20, 1, 20));
+		//agent.SetDestination(new Vector3(20, 1, 20));
 	}
 	
 	// Update is called once per frame
@@ -23,6 +28,7 @@ public class NazgulScript : MonoBehaviour
 	
 	void SetDestination (Vector3 point)
 	{
+		ObstacleToAgent ();
 		agent.SetDestination(point);
 	}
 	
@@ -33,6 +39,7 @@ public class NazgulScript : MonoBehaviour
 			{
 				if (agent.hasPath || agent.velocity.sqrMagnitude == 0f)
 				{
+					AgentToObstacle ();
 					return true;
 				}
 			}
@@ -51,6 +58,16 @@ public class NazgulScript : MonoBehaviour
 			mat.SetColor("_Color", Color.magenta);
 		}
 		
+	}
+
+	void AgentToObstacle(){
+		agent.enabled = false;
+		obstacle.enabled = false;
+	}
+
+	void ObstacleToAgent(){
+		obstacle.enabled = false;
+		agent.enabled = true;
 	}
 	
 }
