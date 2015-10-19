@@ -25,11 +25,14 @@ public class RTSCamera : MonoBehaviour
             
             transform.Rotate(Vector3.up, x * cameraSpeed * Time.deltaTime);
         }
-        else
+        else if(Input.GetKey(KeyCode.X))
         {
+			Vector3 move = new Vector3(Input.GetAxis("Horizontal"),200*Input.GetAxis("Mouse ScrollWheel"),Input.GetAxis("Vertical"));
+			transform.position += move * 5 * Time.deltaTime;
             x = Input.mousePosition.x;
             y = Input.mousePosition.y;
-            if (x < scrollDistance)
+
+           /* if (x < scrollDistance)
             {
                 transform.Translate(-1, 0, 1);
             }
@@ -46,7 +49,7 @@ public class RTSCamera : MonoBehaviour
             if (y >= Screen.height - scrollDistance)
             {
                 transform.Translate(1, 0, 1);
-            }
+            }*/
         }
         
      

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log(Input.GetAxis("Horizontal"));
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         bool sprint = Input.GetButton("Fire3");

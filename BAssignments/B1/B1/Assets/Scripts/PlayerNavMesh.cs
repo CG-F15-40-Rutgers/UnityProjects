@@ -102,12 +102,16 @@ public class PlayerNavMesh : MonoBehaviour {
 		}
 		if (agent.hasPath) {
 			float h = agent.nextPosition.z-prevPosition.z;
+			if(h>1) h=1;
+			if(h<-1) h=1;
 			float v = agent.nextPosition.x-prevPosition.x;
+			if (v>1) v=1;
+			if(v<-1) v=-1;
 			bool sprint = agent.speed==14.0f;
-			bool jump = agent.velocity.y > 0;
+			bool jump = agent.velocity.y > 1;
 		
-			animator.SetFloat ("Forward", -v*agent.speed);
-			animator.SetFloat ("Turn", -h*agent.speed);
+			animator.SetFloat ("Forward", v*agent.speed*5);
+			animator.SetFloat ("Turn", h*agent.speed*5);
 			animator.SetBool ("Sprint", sprint);
 			animator.SetBool ("Jump", jump);
 		} else {
