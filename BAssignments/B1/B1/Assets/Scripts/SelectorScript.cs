@@ -38,7 +38,7 @@ public class SelectorScript : MonoBehaviour {
                     selected.SendMessage("Selected", true);
                     selectedAgents.Add(selected);
                 }
-            }   
+			}
 
             if (hit.transform.tag == "Ground")
             {
