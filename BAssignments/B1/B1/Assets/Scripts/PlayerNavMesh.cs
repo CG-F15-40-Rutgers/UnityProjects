@@ -25,6 +25,7 @@ public class PlayerNavMesh : MonoBehaviour {
 
 	public float NazgulDistance=5.0f;
 
+	public ParticleSystem particles;
 	private Animator animator;
 	private NavMeshAgent agent;
 	private Material mat;
@@ -32,6 +33,9 @@ public class PlayerNavMesh : MonoBehaviour {
 	private bool travelAwayFromNazgul;
 	private Vector3 prevPosition;
 	private CapsuleCollider capsule;
+	private Transform Robot;
+	private int mode;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -39,16 +43,29 @@ public class PlayerNavMesh : MonoBehaviour {
 		capsule = GetComponent<CapsuleCollider>();
 		mat = GetComponent<Renderer>().material;
 		animator = GetComponentInChildren<Animator>();
+		particles = GetComponent<ParticleSystem> ();
+		particles.enableEmission = false;
+		
+		foreach (Transform child in transform) {
+			if(child.gameObject.tag=="Robot Kyle"){
+				Robot=child;
+				break;
+			}
+			
+		}
+
 		mat.SetColor("_Color", Color.blue);
 		travelAwayFromNazgul = false;
 		savedGoal = new Vector3(0.0f,-100.0f,0.0f);
 		prevPosition = transform.position;
 		//agent.SetDestination(new Vector3(20, 1, 20));
+		mode = 1;
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
+		Robot.position = transform.position;
 
 		GameObject[] nazguls = GameObject.FindGameObjectsWithTag ("Nazgul");
 		float distance;
@@ -86,7 +103,7 @@ public class PlayerNavMesh : MonoBehaviour {
 		if (agent.hasPath) {
 			float h = agent.nextPosition.z-prevPosition.z;
 			float v = agent.nextPosition.x-prevPosition.x;
-			bool sprint = agent.velocity.x > 2;
+			bool sprint = agent.speed==14.0f;
 			bool jump = agent.velocity.y > 0;
 		
 			animator.SetFloat ("Forward", -v*agent.speed);
@@ -98,6 +115,13 @@ public class PlayerNavMesh : MonoBehaviour {
 			animator.SetFloat ("Turn", 0);
 		}
 		prevPosition = agent.nextPosition;
+
+		if (Input.GetKeyDown ("o")) {
+			agent.speed=3.5f;
+		}
+		if (Input.GetKeyDown ("p")) {
+			agent.speed=14.0f;
+		}
 	}
 	
 	void SetDestination (Vector3 point)
@@ -124,10 +148,12 @@ public class PlayerNavMesh : MonoBehaviour {
 		if (on)
 		{
 			mat.SetColor("_Color", Color.green);
+			particles.enableEmission=true;
 		}
 		else
 		{
 			mat.SetColor("_Color", Color.blue);
+			particles.enableEmission=false;
 		}
 		
 	}

@@ -13,6 +13,7 @@ public class SelectorScript : MonoBehaviour {
         selectedAgents = new List<GameObject>();
         System.Console.WriteLine("Starting");
 		obstacleSelector = GetComponent<ObstacleSelectAndDrag> ();
+
     }
 
     // Update is called once per frame
@@ -31,7 +32,8 @@ public class SelectorScript : MonoBehaviour {
                 if (selectedAgents.Contains(selected))
                 {
                     selected.SendMessage("Selected", false);
-                    selectedAgents.Remove(selected);
+					selectedAgents.Remove(selected);
+
                 }
                 else
                 {
