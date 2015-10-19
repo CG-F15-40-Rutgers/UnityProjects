@@ -15,11 +15,11 @@ public class RTSCamera : MonoBehaviour
     {
         float x;
         float y;
-        int scrollDistance = 150;
+        int scrollDistance = 100;
         float cameraSpeed = 70;
 
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.C))
         {
             x = Input.GetAxis("Mouse X");
             
