@@ -40,7 +40,7 @@ public class ObstacleSelectAndDrag : MonoBehaviour {
 			}
 		}
 
-		if (selected) {
+		if (selected&&!Input.GetKey(KeyCode.C)&&!Input.GetKey(KeyCode.X)) {
 			Navigate();
 		}
 
