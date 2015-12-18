@@ -16,7 +16,7 @@ public interface IBehaviorUpdate
     RunStatus BehaviorUpdate(float deltaTime);
 }
 
-public class BehaviorManager
+public class BehaviorManager : MonoBehaviour
 {
     private static BehaviorManager instance = null;
     public static BehaviorManager Instance
@@ -46,7 +46,7 @@ public class BehaviorManager
     /// </summary>
     // TODO: Spread this out across frames do we don't get a chug
     // every time we do a behavior update
-    public void Update(float updateTime)
+    public void BehaviorUpdate(float updateTime)
     {
         for (int i = this.receivers.Count - 1; i >= 0; i--)
             if (this.receivers[i].BehaviorUpdate(updateTime) != RunStatus.Running)
