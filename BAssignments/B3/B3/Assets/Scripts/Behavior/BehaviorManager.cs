@@ -16,7 +16,7 @@ public interface IBehaviorUpdate
     RunStatus BehaviorUpdate(float deltaTime);
 }
 
-public class BehaviorManager : MonoBehaviour
+public class BehaviorManager
 {
     private static BehaviorManager instance = null;
     public static BehaviorManager Instance
