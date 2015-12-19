@@ -4,11 +4,10 @@ using TreeSharpPlus;
 
 public class BehaviorTree : MonoBehaviour {
 
-    public Transform wander1, wander2, wander3, wander4, wander5, wander6, lamp, door;
+    public Transform wander1, wander2, wander3, wander4, wander5, wander6, wander7, lamp, door;
     public GameObject participant1, participant2, participant3, participant4, participant5;
     private GameObject[] participants;
     private BehaviorAgent behaviorAgent;
-    private bool openDoor;
 
     // Use this for initialization
     void Start () {
@@ -19,8 +18,6 @@ public class BehaviorTree : MonoBehaviour {
         participants[3] = participant4;
         participants[4] = participant5;
 
-        openDoor = false;
-
         behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
         BehaviorManager.Instance.Register(behaviorAgent);
         behaviorAgent.StartBehavior();
@@ -28,9 +25,12 @@ public class BehaviorTree : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (openDoor)
+	    for (int i = 0; i < 5; i++)
         {
-            // open door
+            if (participants[i].GetComponent<Animator>().GetBool("B_PickupRight") == true)
+            {
+                door.GetComponent<Animation>().Play();
+            }
         }
 	}
 
@@ -52,10 +52,10 @@ public class BehaviorTree : MonoBehaviour {
         return participant.GetComponent<BehaviorMecanim>().Node_OrientTowards(position);
     }
 
-    protected Node ST_OpenDoor()
+    protected Node ST_ApproachToRadius(GameObject participant, Transform target, float dist)
     {
-        openDoor = true;
-        return new LeafWait(5000);
+        Val<Vector3> position = Val.V(() => target.position);
+        return participant.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(position, dist);
     }
 
     protected Node ST_ActivateLamp(GameObject participant, Transform target)
@@ -63,8 +63,7 @@ public class BehaviorTree : MonoBehaviour {
         Val<Vector3> position = Val.V(() => target.position);
         return new Sequence(
             participant.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(position, 2),
-            participant.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("PICKUPRIGHT", 2000),
-            this.ST_OpenDoor()
+            participant.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("PICKUPRIGHT", 2000)
         );
     }
 
@@ -101,7 +100,21 @@ public class BehaviorTree : MonoBehaviour {
                     participant4.GetComponent<BehaviorMecanim>().ST_PlayFaceGesture("ACKNOWLEDGE", 1000),
                     participant5.GetComponent<BehaviorMecanim>().ST_PlayFaceGesture("ACKNOWLEDGE", 1000)
                 ),
-                this.ST_ActivateLamp(participants[(int)Random.Range(0, 4)], lamp)
+                this.ST_ActivateLamp(participants[(int)Random.Range(0, 4)], lamp),
+                new SequenceParallel(
+                    this.ST_ApproachToRadius(participant1, wander7, 2),
+                    this.ST_ApproachToRadius(participant2, wander7, 2),
+                    this.ST_ApproachToRadius(participant3, wander7, 2),
+                    this.ST_ApproachToRadius(participant4, wander7, 2),
+                    this.ST_ApproachToRadius(participant5, wander7, 2)
+                ),
+                new SequenceParallel(
+                    participant1.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CHEER", 2000),
+                    participant2.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CHEER", 2000),
+                    participant3.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CHEER", 2000),
+                    participant4.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CHEER", 2000),
+                    participant5.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CHEER", 2000)
+                )
             );
     }
 }
