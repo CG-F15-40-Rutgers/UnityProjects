@@ -32,7 +32,7 @@ public class BehaviorTree : MonoBehaviour {
         {
             if (participants[i].GetComponent<Animator>().GetBool("B_PickupRight") == true)
             {
-                door.GetComponent<Animation>().Play();
+                door.GetComponent<Animation>().Play("DoorOpen");
             }
         }
 
