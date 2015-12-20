@@ -7,6 +7,7 @@ public class BehaviorTree : MonoBehaviour {
     public Transform wander1, wander2, wander3, wander4, wander5, wander6, wander7, lamp, door;
     public GameObject participant1, participant2, participant3, participant4, participant5;
     private GameObject[] participants;
+    private int selectedParticipant;
     private BehaviorAgent behaviorAgent;
 
     // Use this for initialization
@@ -17,6 +18,8 @@ public class BehaviorTree : MonoBehaviour {
         participants[2] = participant3;
         participants[3] = participant4;
         participants[4] = participant5;
+
+        selectedParticipant = 0;
 
         behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
         BehaviorManager.Instance.Register(behaviorAgent);
@@ -30,6 +33,28 @@ public class BehaviorTree : MonoBehaviour {
             if (participants[i].GetComponent<Animator>().GetBool("B_PickupRight") == true)
             {
                 door.GetComponent<Animation>().Play();
+            }
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (selectedParticipant == 4)
+            {
+                selectedParticipant = 0;
+            }
+            else
+            {
+                selectedParticipant++;
+            }
+        }
+
+            if (Input.GetButtonDown("Fire2"))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                participants[selectedParticipant].GetComponent<BodyMecanim>().NavGoTo(hit.point);
             }
         }
 	}
